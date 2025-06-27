@@ -28,10 +28,15 @@ def proxy(path):
         creds = request.get_json()
         cookies, result, redirect_url = login_with_selenium(creds["username"], creds["password"])
         print("📤 cookies:", cookies)
-        sess = requests.Session()
-        for c in cookies:
-            sess.cookies.set(c['name'], c['value'], domain=c.get('domain'))
-        session['cookies'] = sess.cookies.get_dict()
+        # Make sure cookies is not None
+        if cookies:
+            sess = requests.Session()
+            for c in cookies:
+                sess.cookies.set(c['name'], c['value'], domain=c.get('domain'))
+            session['cookies'] = sess.cookies.get_dict()
+        else:
+            print("⚠️ Warning: No cookies received from selenium login")
+
         resp = jsonify(result)
         resp.status_code = 200
         return resp
@@ -119,6 +124,7 @@ def proxy(path):
                         });
                         this.addEventListener("load", function () {
                             if (this._url.includes('/Service/Login')) {
+                                removeLoadingDiv()
                                 try {
                                     const json = JSON.parse(this.responseText);
                                     console.log("[xhr] /Service/Login →", json);
