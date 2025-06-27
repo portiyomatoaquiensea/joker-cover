@@ -16,7 +16,7 @@ def login_with_selenium(username, password):
 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
-
+    final_url = driver.current_url
     try:
         driver.get("https://www.jokerapp888e.net/GameIndex")
 
@@ -32,6 +32,7 @@ def login_with_selenium(username, password):
         success = final_url.startswith(base_url)
 
         result = {
+            # "Redirect": final_url,
             "Success": success,
             "Message": "Success" if success else "Username or password is incorrect",
             "Data": None
@@ -40,6 +41,7 @@ def login_with_selenium(username, password):
 
     except Exception as e:
         result = {
+            # "Redirect": None,
             "Success": False,
             "Message": str(e),
             "Data": None
