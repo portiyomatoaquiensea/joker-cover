@@ -43,7 +43,7 @@ def login_with_selenium(username, password):
         result = {
             # "Redirect": None,
             "Success": False,
-            "Message": str(e),
+            "Message": "Username or password is incorrect",
             "Data": None
         }
         cookies = None
